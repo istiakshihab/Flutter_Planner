@@ -1,8 +1,7 @@
-import 'package:accountplan/widgets/chart.dart';
-import 'package:accountplan/widgets/new_transaction.dart';
+import 'package:LifeTracker/widgets/chart.dart';
+import 'package:LifeTracker/widgets/new_transaction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import './widgets/transaction_list.dart';
 import 'models/transaction.dart';
 
@@ -10,7 +9,7 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Expenses',
@@ -27,8 +26,8 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(),
     );
-  }
-}
+  } 
+} 
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -41,12 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
     //   id: 'ID00001',
     //   title: 'AC Cool',
     //   amount: 23.00,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 'ID00001',
-    //   title: 'DC Cool',
-    //   amount: 14.33,
     //   date: DateTime.now(),
     // ),
   ];
@@ -93,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: <Widget>[
+        actions: <Widget>[  
           IconButton(
             icon: Icon(
               Icons.add,

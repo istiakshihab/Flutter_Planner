@@ -1,5 +1,5 @@
-import 'package:accountplan/models/transaction.dart';
-import 'package:accountplan/widgets/chart_bar.dart';
+import 'package:LifeTracker/models/transaction.dart';
+import 'package:LifeTracker/widgets/chart_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
