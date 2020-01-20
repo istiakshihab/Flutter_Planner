@@ -1,18 +1,14 @@
 import 'package:LifeTracker/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TransactionList extends StatelessWidget {
-  final List<Transaction> transactions;
+  final databaseReference = Firestore.instance;
   final Function deleteTransaction;
-  TransactionList(this.transactions, this.deleteTransaction);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 300,
-      child: transactions.isEmpty
-          ? Column(
+  TransactionList(this.deleteTransaction);
+  Widget showWaitingImage(){
+        return Column(
               children: <Widget>[
                 SizedBox(
                   height: 20,
@@ -34,9 +30,22 @@ class TransactionList extends StatelessWidget {
                   ),
                 ),
               ],
-            )
-          : ListView.builder(
+            );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 600,
+      child: StreamBuilder(
+          stream: Firestore.instance.collection("account").snapshots(),
+          builder:(context, snapshot){
+          if(!snapshot.hasData)
+          return showWaitingImage();
+          return ListView.builder(
               itemBuilder: (ctx, index) {
+                DocumentSnapshot document = snapshot.data.documents[index];
+                if(snapshot.data.documents.length<1)
+                  return showWaitingImage();
                 return Card(
                   margin: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
                   elevation: 2,
@@ -47,18 +56,18 @@ class TransactionList extends StatelessWidget {
                         padding: EdgeInsets.all(3),
                         child: FittedBox(
                             child: Text(
-                                '\$${transactions[index].amount.toStringAsFixed(2)}')),
+                                '\$${document['amount'].toStringAsFixed(2)}')),
                       ),
                     ),
                     title: Text(
-                      transactions[index].title,
+                      document['title'],
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     subtitle: Text(
-                      DateFormat.yMMMd().format(transactions[index].date),
+                      DateFormat.yMMMd().format(document['date'].toDate()),
                       style: TextStyle(
                         color: Colors.blueGrey,
                       ),
@@ -69,14 +78,16 @@ class TransactionList extends StatelessWidget {
                         color: Theme.of(context).errorColor,
                       ),
                       onPressed: () => deleteTransaction(
-                        transactions[index].id,
+                        document.documentID,
                       ),
                     ),
                   ),
                 );
               },
-              itemCount: transactions.length,
-            ),
+             itemCount:  snapshot.data.documents.length,
+            );
+          }
+    ),
     );
   }
 }

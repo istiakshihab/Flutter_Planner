@@ -1,18 +1,18 @@
-import 'package:LifeTracker/widgets/chart.dart';
-import 'package:LifeTracker/widgets/new_transaction.dart';
+import 'package:LifeTracker/account.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import './widgets/transaction_list.dart';
-import 'models/transaction.dart';
+import 'package:LifeTracker/memoire.dart';
+import 'package:LifeTracker/stopwatch.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Expenses',
+      title: 'Main Page',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: 'manrope',
@@ -26,99 +26,78 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(),
     );
-  } 
-} 
-
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _userTransactions = [
-    // Transaction(
-    //   id: 'ID00001',
-    //   title: 'AC Cool',
-    //   amount: 23.00,
-    //   date: DateTime.now(),
-    // ),
-  ];
-
-  List<Transaction> get _recentTransaction {
-    return _userTransactions.where((test) {
-      return test.date.isAfter(
-        DateTime.now().subtract(
-          Duration(days: 7),
-        ),
-      );
-    }).toList();
-  }
-
-  void _addTransaction(String title, double amount, DateTime chosenDate) {
-    final newTransaction = Transaction(
-      title: title,
-      amount: amount,
-      id: DateTime.now().toString(),
-      date: chosenDate,
-    );
-    setState(() {
-      _userTransactions.add(newTransaction);
-    });
-  }
-
-  void _deleteTransaction(String id){
-    setState(() {
-      _userTransactions.removeWhere((transaction){
-        return transaction.id == id;
-      });
-    });
-  }
-
-  void _startAddNewTrx(BuildContext ctx) {
-    showModalBottomSheet(
-        context: ctx,
-        builder: (_) {
-          return NewTransaction(_addTransaction);
-        });
-  }
-
-  @override
+class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: <Widget>[  
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              color: Colors.black,
-            ),
-            onPressed: () => _startAddNewTrx(context),
-          )
-        ],
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          "Expenses",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.normal,
-          ),
+          'Home Page',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal),
         ),
       ),
-      body: SingleChildScrollView(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Chart(_recentTransaction),
-            TransactionList(_userTransactions, _deleteTransaction),
+            Container(
+              padding: const EdgeInsets.all(15.0),
+              child: Text(
+                'Welcome to Daylio?',
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 19,
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              child: RaisedButton(
+                textColor: Colors.white,
+                color: Colors.blue,
+                child: Text('Memoire'),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Memoire(),
+                      ),);
+                },
+              ),
+            ),
+            RaisedButton(
+              textColor: Colors.white,
+              color: Colors.blue,
+              child: Text('Account'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Account(),
+                  ),
+                );
+              },
+            ),
+            RaisedButton(
+              textColor: Colors.white,
+              color: Colors.blue,
+              child: Text('StopWatch'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => StopWidget(),
+                  ),
+                );
+              },
+            )
           ],
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _startAddNewTrx(context),
       ),
     );
   }

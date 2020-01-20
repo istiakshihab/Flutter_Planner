@@ -37,6 +37,10 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    for(int i = 0 ; i< recentTransactions.length; i++){
+      print(recentTransactions[i].title);
+    }
+    print(")_)_)_)_)_)_)_)_)");
     return Card(
       margin: EdgeInsets.all(10),
       child: Container(
